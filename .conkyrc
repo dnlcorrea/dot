@@ -1,0 +1,58 @@
+conky.config = {
+	own_window = true,
+	own_window_class = 'conky',
+	own_window_colour = '000000',
+	own_window_argb_visual = true,
+	own_window_argb_value = 120,
+	own_window_type = 'override',
+	own_window_transparent = false,
+	background = false,
+	double_buffer = true,
+	alignment = 'top_right',
+	border_width = 0,
+	border_inner_margin = 40,
+	gap_x = 40,
+	gap_y = 30,
+	use_xft = true,
+	draw_shades = no,
+	font = 'DejaVuSans:size=11',
+	update_interval=1
+};
+
+conky.text = [[
+$alignc${font Input Sans:size=18}${exec cat /etc/hostname}$font
+
+${color 70798c}Info:$color ${scroll 30 Conky $conky_version - $sysname $nodename $kernel $machine}
+${color 70798c}Uptime:$color $uptime
+${color 70798c}Frequency (in GHz):$color $freq_g
+${color 70798c}RAM Usage:$color $mem/$memmax - $memperc%
+${membar}
+${color 70798c}Swap Usage:$color $swap/$swapmax - $swapperc%
+${color 70798c}CPU Usage:$color $cpu% ${cpubar 4}
+${color 70798c}Processes:$color $processes  ${color 70798c}Running:$color $running_processes
+
+${color 70798c}BATTERY${color eeeeee} ${battery_bar} 
+
+${color 70798c} Disk Read:${color eeeeee} ${diskio}
+$diskiograph
+
+/ $alignr${font DejaVuSans:pixelsize=13}$color${fs_used /} ${fs_size /} ${fs_free /}$font
+${fs_bar 4 /}
+~ $alignr${font DejaVuSans:pixelsize=13}${fs_used /home} ${fs_size /home} ${fs_free /home}
+${fs_bar 6 /home}
+
+wlp1s0: ${addr wlp1s0}$alignr↑ ${upspeedf wlp1s0}↓ ${downspeedf wlp1s0}
+ ${downspeedgraph wlp1s0 25,135 eeeeee 70798c -l} ${upspeedgraph wlp1s0 25,135 eeeeee 70798c -l}
+enp2s0: ${addr enp2s0}$alignr↑${upspeedf enp2s0}↓${downspeedf enp2s0}
+
+${color 70798c}Name $alignr PID     CPU   MEM
+${color lightgrey}${top name 1} $alignr ${top pid 1} ${top cpu 1} ${top mem 1}
+${color lightgrey}${top name 2} $alignr ${top pid 2} ${top cpu 2} ${top mem 2}
+${color lightgrey}${top name 3} $alignr ${top pid 3} ${top cpu 3} ${top mem 3}
+${color lightgrey}${top name 4} $alignr ${top pid 4} ${top cpu 4} ${top mem 4}
+${execi 3000 curl -sf -o /home/daniel/w.png 'https://wttr.in/Foz+do+Iguaçu_0qp.png'}
+
+${voffset 50}
+
+${image /home/daniel/w.png -f 20 -p 20,600 -s 264x126 }
+]]

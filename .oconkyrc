@@ -1,0 +1,11 @@
+conky.config = {
+	out_to_console = true,
+	out_to_x = false,
+	background = false,
+	update_interval = 2,
+	total_run_times = 0,
+	use_spacer = 'none',
+};
+conky.text = [[
+${cpu cpu1}%;${cpu cpu2}%;${acpitemp};$memperc;$mem;${downspeed wlp1s0};${upspeed wlp1s0};${battery_percent};${time %a %b %d %I:%M%P};${execi 180 curl -sf 'https://wttr.in/Foz do Iguaçu?format=%c%f'}
+]];
