@@ -23,8 +23,8 @@ setmonitor() {
 
 case "$CHOICE" in
     fodao)
-    setmonitor "--output $hdmi --mode 1920x1080 $brightness" \
-        "--output $note --auto --primary --right-of $hdmi $brightness" $hdmi
+    setmonitor "--output $hdmi --primary --auto $brightness" \
+        "--output $note --auto  --right-of $hdmi $brightness" $hdmi
     font=170
     ;;
 
@@ -35,7 +35,7 @@ case "$CHOICE" in
     ;;
 
     tv)
-    setmonitor "--output $hdmi --mode 1920x1080 $brightness" \
+    setmonitor "--output $hdmi --mode 1920x1080 --primary $brightness" \
         "--output $note --off" $hdmi \
         $hdmi
     font=170
@@ -61,6 +61,9 @@ esac
 
 # Do the thing
 xrandr $LEFT $RIGHT
+
+#qtile-cmd -o cmd -f restart
+wal -R
 
 notify-send -t 3000 "💻 Primary" $MONITOR
 

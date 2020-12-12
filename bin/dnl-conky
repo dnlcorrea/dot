@@ -1,7 +1,0 @@
-#!/bin/sh
-
-conky -c .oconkyrc | while read l
-
-	do echo $l | awk '{print $2}'
-done 
-

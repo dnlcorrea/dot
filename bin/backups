@@ -1,14 +1,16 @@
 #!/bin/bash
 
-fmt="$(date +%F.%T)"
-BACKUP_FOLDER="$HOME/backups"
 
-backdfckup() {
+function backdfckup() {
+  fmt="$(date +%F.%T)"
+  BACKUP_FOLDER="$HOME/backups"
     # $1 ssh host
     # $2 DB NAME
     FILE="$BACKUP_FOLDER/$2.${fmt}.sql"
     ssh $1 "mysqldump -y $2 | gzip -c" | gzip -cd > $FILE  && du -h "$FILE"
 }
+
+export -f backdfckup
 
 date
 
@@ -22,26 +24,12 @@ date
 
 cd ~/backups
 
-# COSMOETHOS
-backdfckup cosmoethos cosmo095_ethos
-
-# ATMÃ EDUCAR
-backdfckup atmaeducar atmae125_atmae125
-
-# PDS UNIAMÉRICA
-backdfckup pds@uniamerica.br pds
-
-# SITE UNI
-backdfckup uniamerica@uniamerica.br uniamerica
-
-# Urcamp
-backdfckup urcamp@do urcamp
-
-# UCV
-backdfckup ucv@do ucv
-
-# 31 Edu
-#backdfckup edu31@happyturtle 31solutions_edu
+parallel ::: "backdfckup cosmoethos cosmo095_ethos" \
+  "backdfckup pds@uniamerica.br pds" \
+  "backdfckup uniamerica@uniamerica.br uniamerica" \
+  "backdfckup urcamp@do urcamp" \
+  "backdfckup ucv@do ucv" \
+  "backdfckup happyturtle agendapositiva"
 
 # ENCRYPT / SEND
 if [[ $(date +%H) -gt 12 ]]; then
@@ -69,16 +57,12 @@ echo done
 echo "Backing up documents"
 
 ## Servers
-## SSH / FOlder
-SERVERS="ucv@do,ucv urcamp@do,urcamp pds@uniamerica.br,pds"
 
-for i in $SERVERS
-do
-    IFS=',' read -ra l <<< "$i"
-    echo "Server: ${l[0]}"
-    rsync -urzzv ${l[0]}:storage "$BACKUP_FOLDER/docs/${l[1]}"
-done   
+BACKUP_FOLDER="$HOME/backups/docs"
 
+parallel rsync -urzzv ::: "ucv@do:storage $BACKUP_FOLDER/ucv" \
+    "urcamp@do:storage $BACKUP_FOLDER/urcamp" \
+    "pds@uniamerica.br:storage $BACKUP_FOLDER/pds"
 
 ## Backup site Uniamerica
 rsync -rzzuv uniamerica@uniamerica.br:{public,storage} $HOME/www/uniamerica

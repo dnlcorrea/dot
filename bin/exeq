@@ -1,5 +1,3 @@
-#!/binbash
+#!/bin/bash
 
-cd /home/daniel
-
-alacritty -e "$(fd -t x  | rofi -dmenu)"
+alacritty -t exeq -e $(fd -t x  | rofi -dmenu)

@@ -7,26 +7,28 @@ $f = fopen( 'php://stdin', 'r' );
 
 while( $line = fgets( $f ) ) {
 
-	[ $cpu1, $cpu2, $temp, $mem1, $mem2, $down, $up, $battery, $date, $weather ]
+	[ $cpu1, $cpu2, $temp, $mem1, $mem2, $down, $up, $battery, $date, $weather, $fs ]
 	= explode(";", $line);
 
-	printf(" 💻 (%3s :%3s)", $cpu1, $cpu2);
+  printf(" 🐧 %.6s", exec("uname -r"));
 
-	echo " ";
+	echo "\x02 │";
+
+	printf(" 💻 %3s %3s", $cpu1, $cpu2);
+
+	echo " │";
 	
 
 	printf("%3sº", $temp);
 
-	echo " ";
+	echo " │";
 	
-	printf(" 💽 %2s%%|%5s", $mem1, $mem2);
+	printf(" %2s%% %5s", $mem1, $mem2);
 
-	echo " ";
+	echo " │";
 
-	printf("  %8s", $down);
-	printf("  %8s", $up);
-
-	echo " ";
+	printf("  %5s", $down);
+	printf("  %5s", $up);
 
 	if( $battery > 90 ) {
 		$icon = "";
@@ -40,21 +42,24 @@ while( $line = fgets( $f ) ) {
 		$icon = "";
 	}
 
+	//printf(" $icon %4s%%", $battery);
 
-	printf(" $icon %4s%%", $battery);
+	echo " │";
 
-	echo " ";
-
-	printf(" ");
+	printf("  ");
 	system("pactl list sinks | awk '/Volume:/{print $5}' | head -1");
 
-	echo " ";
+	echo " │";
 
-	printf("%s", $date);
 	
-	echo " ";
+	printf(" %s", $weather);
 
-	printf("%s", $weather);
+	echo " │";
+
+	printf(" 💽 %s", $fs);
+
+	echo " │";
+	printf(" %s", $date);
 }
 
 fclose( $f );

@@ -1,0 +1,96 @@
+1. Emitindo Notas usando Curl. Dá para logar para ele salvar os cookies (sessão), ver como ele faz o Curl de emitir a nota (POST), e ter uma lista de curls para fazer. Salvar uns arquivos na pasta da Contabilidade com os dados de cada nota etc.
+
+  Login: curl -L -b cookies -c cookies -d 'idEmpresa=23928' http://nfse.pmfi.pr.gov.br/nfseweb/Empresa/VerificaEmpresa
+
+  Escolher Empresa: curl -b cookies -c cookies -d 'idEmpresa=23928' http://nfse.pmfi.pr.gov.br/nfseweb/Empresa/VerificaEmpresa
+
+curl 'http://nfse.pmfi.pr.gov.br/nfseweb/NFSE/Emissao' \
+  -H 'Connection: keep-alive' \
+  -H 'Pragma: no-cache' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Origin: http://nfse.pmfi.pr.gov.br' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'DNT: 1' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Referer: http://nfse.pmfi.pr.gov.br/nfseweb/NFSE/Emissao' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  --compressed \
+  --insecure \
+  -d "STSERIE: F\
+    IDEMPCONTHOMO.IDEMPCONTHOMO=\
+    IDEMPCONTHOMO._IDEMPCONT.NUNUMEROCONT=\
+    IDEMPCONTHOMO.STTIPO=\
+    IDEMPCONTHOMO.NUTIPOVIGENCIA=\
+    IDEMPCONTHOMO.DTEXECUCAOINI=\
+    IDEMPCONTHOMO.DTEXECUCAOFIM=\
+    IDEMPCONTHOMO.VLSERVICO=\
+    IDEMPCONTHOMO._IDEMPCONT.STUNIDADEECONOMICA=\
+    STPRE_CPFCNPJ=32987680000175\
+    STPRE_STIM=76431\
+    idEmpresa=23928\
+    stTom_Pessoa_Tipo=F\
+    stTom_CpfCnpj=41892852934\
+    stTom_CpfCnpj_Estrangeiro=41892852934\
+    stTom_Nome=Julianne Fischer\
+    stTom_CEP=85856750\
+    stTom_End_Logr=Av. Felipe Wandscheer\
+    stTom_End_Numero=6611\
+    stTom_End_Bairro=Cognopolis\
+    stTom_End_Complemento=casa 87\
+    stTom_Telefone=\
+    stTom_NomeCidade=Foz do Iguaçu\
+    stTom_UF=PR\
+    stCodigoIBGE=4108304\
+    stTom_IM=\
+    stTom_Email=\
+    stEnviaPorEmail=true\
+    stServico_Descricao=Desenvolvimento de Website\
+    Parcela 9 de 10\
+    Outubro / 2020\
+    idCNAE_SubClasse=5811500\
+    idServico=10.03\
+    IDOPERACAO=1\
+    idPre_idCidade=4108304\
+    descriPre_idCidade=Foz do Iguaçu\
+    ufCidadePrestacao=PR\
+    STUNIDECO=N\
+    vlServicos=0,00\
+    pcAliquota=\
+    RegimeAliquotas=3\
+    vlTotalISS=0,0\
+    vlISSRetido=0,0\
+    stISSRetido=N\
+    vlDescCondicionado=0,00\
+    vlDescIncondicionado=0,00\
+    vlPIS=0,00\
+    vlCOFINS=0,00000\
+    vlINSS=0,00\
+    vlIR=0,00000\
+    vlCSLL=0,00000\
+    vlIOF=0,00\
+    vlDeducoes=0,00\
+    vlOutrasRetencoes=0,00\
+    vlTotalLiquido=0,00\
+    vlBaseCalculo=0,00\
+    stCEI=\
+    stNumeroART=\
+    stInt_CpfCnpj=\
+    stInt_Nome=\
+    stInt_IM=\
+    stOutrasInf=\
+    RPSNumero=\
+    RPSSerie=\
+    RPSTipo=\
+    RPSDtEmissao=\
+    Operacao=Emitir\
+    idTom_idCidade=4108304\
+    dtData=19/10/2020 20:53:39\
+    IdRegime=3\
+    sttipoAliquota=\
+    stNumNFSESubst=\
+    STSITUACAO=A\
+    BloqueiaCampos=\
+    tbNFSEImportada=\
+    IdOperacao=System.Web.Mvc.SelectList"
