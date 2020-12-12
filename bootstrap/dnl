@@ -3,7 +3,7 @@
 pacman -Sy
 pacman -S --noconfirm --needed git
 if [ ! -d .dot ]; then
-    until git clone https://dnlcorrea@github.com/dnlcorrea/dot.git .dot; do
+    until git clone --depth 1 https://dnlcorrea@github.com/dnlcorrea/dot.git .dot; do
 	echo Trying again
     done
 fi

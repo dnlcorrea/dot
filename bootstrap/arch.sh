@@ -87,6 +87,6 @@ touch $HOME/.installed
 
 mv .dot /mnt/home/daniel/.dot
 
-arch-chroot /mnt bash /mnt/home/daniel/.dot/bootstrap/chroot.sh
+arch-chroot /mnt bash /home/daniel/.dot/bootstrap/chroot.sh
 
 #reboot
