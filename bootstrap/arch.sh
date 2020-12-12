@@ -46,8 +46,6 @@ EOF
 
 partprobe
 
-sleep 7 
-
 yes | mkfs.ext4 /dev/sda4
 yes | mkfs.ext4 /dev/sda3
 yes | mkfs.fat -F32 /dev/sda1
@@ -66,6 +64,7 @@ mount /dev/sda1 /mnt/boot
 # HOME
 mkdir -p /mnt/home
 mount /dev/sda4 /mnt/home
+mkdir /mnt/home/daniel
 
 export SERVER='Server = http://archlinux.c3sl.ufpr.br/$repo/os/$arch'
 sed -i "1i\\$SERVER" /etc/pacman.d/mirrorlist
@@ -86,6 +85,8 @@ cp -v *.sh /mnt
 
 touch $HOME/.installed
 
-arch-chroot /mnt bash chroot.sh
+mv .dot /mnt/home/daniel/.dot
+
+arch-chroot /mnt bash /mnt/home/daniel/.dot/bootstrap/chroot.sh
 
 #reboot
