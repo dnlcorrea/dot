@@ -1,0 +1,17 @@
+#!/bin/bash
+
+CLIENT_ID="oOuMSXzfP_nMPM5H0vn-qBkfkQfRCqW5GPTdFwpE7MU"
+WALL="$HOME/Dropbox/wallpaper"
+NAME=$(/usr/local/bin/uuid)
+
+echo $PATH
+
+curl "https://api.unsplash.com/photos/random?client_id=$CLIENT_ID" \
+	| jq -r '.urls.full' \
+	| wget -i - -O "$WALL/$NAME"
+
+wal -i "$WALL/$NAME"
+
+mogrify -resize 1980x "$WALL/$NAME"
+
+find $WALL -mtime +30 -delete

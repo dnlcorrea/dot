@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if transmission-remote -si | grep 'Disabled turtle'; then
+transmission-remote -as
+else
+transmission-remote -AS
+fi

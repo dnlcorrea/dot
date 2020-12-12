@@ -1,0 +1,3 @@
+#!/bin/bash
+
+google-chrome-stable --new-window `rofi -dmenu < ~/.urls | awk -F\| '{print $2}'`

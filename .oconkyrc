@@ -7,5 +7,5 @@ conky.config = {
 	use_spacer = 'none',
 };
 conky.text = [[
-${cpu cpu1}%;${cpu cpu2}%;${acpitemp};$memperc;$mem;${downspeed wlp1s0};${upspeed wlp1s0};${battery_percent};${time %a %b %d %I:%M%P};${execi 180 curl -sf 'https://wttr.in/Foz do Iguaçu?format=%c%f'}
+${cpu cpu1}%;${cpu cpu2}%;${acpitemp};$memperc;$mem;${downspeedf wlp1s0};${upspeedf wlp1s0};${battery_percent};${time %a %b %d %I:%M%P};${execi 180 curl -sf 'https://wttr.in/Foz+do+Iguaçu?format=%c%f'};/${fs_used_perc /}% ~${fs_used_perc /home}%
 ]];

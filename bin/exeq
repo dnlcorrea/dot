@@ -1,0 +1,5 @@
+#!/binbash
+
+cd /home/daniel
+
+alacritty -e "$(fd -t x  | rofi -dmenu)"

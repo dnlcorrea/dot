@@ -1,0 +1,84 @@
+#!/bin/bash
+
+fmt="$(date +%F.%T)"
+BACKUP_FOLDER="$HOME/backups"
+
+backdfckup() {
+    # $1 ssh host
+    # $2 DB NAME
+    FILE="$BACKUP_FOLDER/$2.${fmt}.sql"
+    ssh $1 "mysqldump -y $2 | gzip -c" | gzip -cd > $FILE  && du -h "$FILE"
+}
+
+date
+
+# Keys to add to ssh-agent
+#eval "$(ssh-agent -s)"
+
+# Add keys here
+# for key in ~/.ssh/novosoui; do
+#     ssh-add $key
+# done
+
+cd ~/backups
+
+# COSMOETHOS
+backdfckup cosmoethos cosmo095_ethos
+
+# ATMÃ EDUCAR
+backdfckup atmaeducar atmae125_atmae125
+
+# PDS UNIAMÉRICA
+backdfckup pds@uniamerica.br pds
+
+# SITE UNI
+backdfckup uniamerica@uniamerica.br uniamerica
+
+# Urcamp
+backdfckup urcamp@do urcamp
+
+# UCV
+backdfckup ucv@do ucv
+
+# 31 Edu
+#backdfckup edu31@happyturtle 31solutions_edu
+
+# ENCRYPT / SEND
+if [[ $(date +%H) -gt 12 ]]; then
+    PERIOD=2
+else
+    PERIOD=1
+fi
+
+BCKFILE="backup.$(date +%F).$PERIOD.tgz"
+
+echo $BCKFILE
+
+ls -a | grep "$(date +%F)" | xargs tar czf $BCKFILE
+
+gpg --encrypt --recipient dnlcorrea@gmail.com $BCKFILE
+
+rclone copy -P $BCKFILE.gpg drive:backups
+mv $BCKFILE.gpg ~/Dropbox/backups
+rm $BCKFILE
+
+echo done
+
+############################
+
+echo "Backing up documents"
+
+## Servers
+## SSH / FOlder
+SERVERS="ucv@do,ucv urcamp@do,urcamp pds@uniamerica.br,pds"
+
+for i in $SERVERS
+do
+    IFS=',' read -ra l <<< "$i"
+    echo "Server: ${l[0]}"
+    rsync -urzzv ${l[0]}:storage "$BACKUP_FOLDER/docs/${l[1]}"
+done   
+
+
+## Backup site Uniamerica
+rsync -rzzuv uniamerica@uniamerica.br:{public,storage} $HOME/www/uniamerica

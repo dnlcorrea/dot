@@ -1,0 +1,4 @@
+#!/bin/bash
+S=$(zenity --entry --text "string" --title "Query Google" --entry-text "Query")
+
+google-chrome-stable --new-window "https://www.google.com/search?q=${S}"

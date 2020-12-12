@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cd $(find /home/daniel -maxdepth 3 -type d | rofi -dmenu)

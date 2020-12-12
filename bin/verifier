@@ -1,0 +1,31 @@
+#!/bin/bash
+
+lebot() {
+    #curl -i -X GET "https://api.telegram.org/bot866057818:AAG30XM0Z8nMuU1bXshz-PQH3yu_EG8BNzA/sendMessage?chat_id=-398085038&text=$1"
+    echo 'TELE FOI NIHSA' $1
+}
+
+check() {
+    STATUS=$(curl -sI $1 | grep HTTP | awk '{print $2}')
+    if [ $STATUS -eq 301 -o $STATUS -eq 200 -o $STATUS = 302 ]
+    then
+	echo "COOL $1"
+    else
+	lebot "Erro! $1 $STATUS"
+    fi
+}
+
+curlie() {
+    check https://$1
+    check http://$1
+}
+
+SITES="31solutions.com magnidea.com.br embaixadoresdeiguassu.com.br escritacientifica.com.br espaco.uniamerica.br soui.urcamp.edu.br desafios.uniamerica.br"
+
+# The sites
+for site in $SITES
+do
+    curlie $site
+done
+
+

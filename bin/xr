@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Define monitors
+note=$(xrandr | awk '/eDP/{print $1}')
+hdmi=$(xrandr | awk '/HDMI/{print $1}')
+brightness="--brightness .91112"
+
+while getopts "m:" o; do case "${o}" in
+
+m) CHOICE=${OPTARG}
+
+esac done
+
+if [ -z "$CHOICE" ]; then
+    CHOICE=$(zenity --list --title=Mode --column Mode fodao datashow tv note mirror)
+fi
+
+setmonitor() {
+    export LEFT="$1"
+    export RIGHT="$2"
+    export MONITOR="$3"
+}
+
+case "$CHOICE" in
+    fodao)
+    setmonitor "--output $hdmi --mode 1920x1080 $brightness" \
+        "--output $note --auto --primary --right-of $hdmi $brightness" $hdmi
+    font=170
+    ;;
+
+    datashow)
+    setmonitor "--output $hdmi --mode 1152x864 $brightness" \
+        "--output $note --auto --primary --right-of $hdmi $brightness" $note
+    font=170
+    ;;
+
+    tv)
+    setmonitor "--output $hdmi --mode 1920x1080 $brightness" \
+        "--output $note --off" $hdmi \
+        $hdmi
+    font=170
+
+    # Set pulseaudio profile. Use TV audio.
+    # pactl set-card-profile 0 output:hdmi-stereo+input:analog-stereo
+    ;;
+
+    note)
+    setmonitor "--output $hdmi --off" "--output $note --primary --auto $brightness" $note
+    font=140
+    ;;
+
+    mirror)
+    setmonitor "--output $hdmi --panning 1920x1080* --same-as $note" "--output $note --primary --auto $brightness" $note
+    font=140
+    ;;
+
+    *) exit 1
+
+esac
+
+
+# Do the thing
+xrandr $LEFT $RIGHT
+
+notify-send -t 3000 "💻 Primary" $MONITOR
+
+exit 0

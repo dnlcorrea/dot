@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo power on | bluetoothctl
+sleep 2
+echo connect F0:65:DD:69:58:89 | bluetoothctl

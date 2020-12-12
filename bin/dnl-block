@@ -1,0 +1,60 @@
+#!/usr/bin/php
+<?php
+
+/*      */
+
+$f = fopen( 'php://stdin', 'r' );
+
+while( $line = fgets( $f ) ) {
+
+	[ $cpu1, $cpu2, $temp, $mem1, $mem2, $down, $up, $battery, $date, $weather ]
+	= explode(";", $line);
+
+	printf(" 💻 (%3s :%3s)", $cpu1, $cpu2);
+
+	echo " ";
+	
+
+	printf("%3sº", $temp);
+
+	echo " ";
+	
+	printf(" 💽 %2s%%|%5s", $mem1, $mem2);
+
+	echo " ";
+
+	printf("  %8s", $down);
+	printf("  %8s", $up);
+
+	echo " ";
+
+	if( $battery > 90 ) {
+		$icon = "";
+	} else if ( $battery > 70 ) {
+		$icon = "";
+	} else if ( $battery > 40 ) {
+		$icon = "";
+	} else if ( $battery > 10 ) {
+		$icon = "";
+	} else {
+		$icon = "";
+	}
+
+
+	printf(" $icon %4s%%", $battery);
+
+	echo " ";
+
+	printf(" ");
+	system("pactl list sinks | awk '/Volume:/{print $5}' | head -1");
+
+	echo " ";
+
+	printf("%s", $date);
+	
+	echo " ";
+
+	printf("%s", $weather);
+}
+
+fclose( $f );
