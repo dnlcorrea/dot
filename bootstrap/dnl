@@ -2,12 +2,12 @@
 
 pacman -Sy
 pacman -S --noconfirm --needed git
-if [ ! -d bootstrap ]; then
-    until git clone https://dnlcorrea43@bitbucket.org/dnlcorrea43/bootstrap.git; do
+if [ ! -d .dot ]; then
+    until git clone https://dnlcorrea@github.com/dnlcorrea/dot.git .dot; do
 	echo Trying again
     done
 fi
 
-cd bootstrap
+cd .dot/bootstrap
 
 echo Start with arch.sh
