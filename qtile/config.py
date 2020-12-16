@@ -90,8 +90,8 @@ keys = [
     # Maybe this is what I want
     Key(["shift"], "space", lazy.layout.shuffle_up()),
 
-    Key([mod], "g", lazy.spawn("google-chrome-stable"),
-        desc="Launch browser"),
+    Key([mod, "shift"], "g", lazy.spawn("google-chrome-stable"), desc="Launch browser"),
+    Key([mod], "g", lazy.spawn("/home/daniel/Applications/brave"), desc="Launch browser"),
 
     Key([mod], "slash", lazy.window.toggle_floating(),
         desc="Toggle Floating"),
@@ -118,7 +118,7 @@ keys = [
     ),
 
     Key([mod], "b", lazy.hide_show_bar("top"), desc='Toggle bar' ),
-    Key([mod], "a", lazy.function(toggleMargins)),
+    Key([mod], "t", lazy.function(toggleMargins)),
     Key([mod], "z", lazy.function(incMargins)),
     Key([mod, "shift"], "z", lazy.function(decMargins)),
 
@@ -127,18 +127,9 @@ keys = [
     Key([mod], "comma", lazy.screen.prev_group() ),
     Key([mod], "period", lazy.screen.next_group() ),
 
+    Key([mod], "r", lazy.spawn("alacritty -e ranger"), desc="Launch Ranger"),
 
-    Key([mod], "r", lazy.spawn("st -e fish -c 'dvtm nnn nnn'"),
-        desc="Launch browser"),
-
-    Key([mod, "shift"], "r", lazy.spawn("st fish -c ranger"),
-        desc="Launch browser"),
-
-    Key([mod], "d", lazy.spawn("dmenu_run"),
-        desc="Launch browser"),
-
-    Key([mod], "v", lazy.spawn("emacsclient -c"),
-        desc="Launch Emacs"),
+    Key([mod], "v", lazy.spawn(terminal + " -e nvim"), desc="Launch Nvim"),
 
     Key([mod], "n", lazy.spawn("nvim-qt"),
         desc="Launch Emacs"),
@@ -147,9 +138,6 @@ keys = [
         desc="Switch window focus to other pane(s) of stack"),
 
     Key([mod, "shift"], "Tab", lazy.prev_layout(),
-        desc="Switch window focus to other pane(s) of stack"),
-
-    Key([mod], "apostrophe", lazy.spawn("search"),
         desc="Switch window focus to other pane(s) of stack"),
 
     Key([mod], "BackSpace", lazy.spawn('st -c pulsemixer pulsemixer'),
@@ -163,7 +151,10 @@ keys = [
 
     Key(["mod1"], "space", lazy.spawn("rofi -show window")),
 
-    Key([mod], "equal", lazy.spawn("rofi -modi 'clipboard:greenclip print' -show")),
+    Key([mod], "apostrophe", lazy.spawn("rofi -modi 'clipboard:greenclip print' -show")),
+
+    Key([mod], "equal", lazy.spawn("pactl -- set-sink-volume 0 +10%")),
+    Key([mod], "minus", lazy.spawn("pactl -- set-sink-volume 0 -10%")),
 
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
 
@@ -172,10 +163,12 @@ keys = [
     Key([mod], "grave", lazy.spawn("rofi -show drun"),
         desc="Spawn a command using a prompt widget"),
 
+    Key([mod, "shift"], "s", lazy.spawn("rofi -show ssh")),
+
     #### Layouts Index
-    Key([mod, "shift"], "a", lazy.to_layout_index(0) ),
-    Key([mod, "shift"], "s", lazy.to_layout_index(1) ),
-    Key([mod, "shift"], "d", lazy.to_layout_index(2) ),
+    Key([mod], "a", lazy.to_layout_index(0) ),
+    Key([mod], "s", lazy.to_layout_index(1) ),
+    Key([mod], "d", lazy.to_layout_index(2) ),
 ]
 
 groups = [Group(i, position=i) for i in "123456789"]

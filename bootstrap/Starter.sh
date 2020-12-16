@@ -6,14 +6,16 @@ HOME='/home/daniel'
 
 mkdir -p $HOME/.config
 
-git clone https://dnlcorrea@github.com/dnlcorrea/dot .dot
-git clone https://gitlab.com/dwt1/wallpapers
+git clone --depth 1 https://gitlab.com/dwt1/wallpapers
 
 wal -i wallpapers
 
 ln -sf $HOME/.dot/.xinitrc .xinitrc
 ln -sf $HOME/.dot/qtile .config/
 ln -sf $HOME/.dot/bin .
+ln -sf $HOME/.dot/picom.conf .config/
+chmod +x -R $HOME/bin
+
 
 rm -v .bashrc .gitignore .zshrc
 
@@ -27,7 +29,7 @@ yes | makepkg -si
 
 cd ..
 
-yay -S --no-confirm dropbox rofi-greenclip
+yay -S --no-confirm dropbox rofi-greenclip picom-jonaburg-git
 
 # FZF
 git clone https://github.com/junegunn/fzf .fzf
