@@ -50,7 +50,7 @@ keys = [
     Key([mod], "F1", lazy.spawn("pavucontrol"), desc="Pulse Audio GUI"),
 
     # QTile COnfig and documentation
-    Key([mod], "p", lazy.spawn("st nvim .config/qtile/config.py"), desc="Edit config file"),
+    Key([mod], "p", lazy.spawn(terminal + " -e nvim .config/qtile/config.py"), desc="Edit config file"),
     Key([mod, "shift"], "p",
         lazy.spawn("google-chrome-stable --new-window http://docs.qtile.org/en/latest/"),
         desc="QTile documentation on the world wide web."
@@ -99,11 +99,11 @@ keys = [
     Key([mod], "f", lazy.window.toggle_fullscreen(),
         desc="Toggle Fullscreen"),
 
-    Key([mod], "e", lazy.to_screen(1) ),
-    Key([mod, "shift"], "e", lazy.window.toscreen(1), desc="To screen"),
+    Key([mod], "e", lazy.to_screen(0) ),
+    Key([mod, "shift"], "e", lazy.window.toscreen(0), desc="To screen"),
 
-    Key([mod], "w", lazy.to_screen(0) ),
-    Key([mod, "shift"], "w", lazy.window.toscreen(0), desc="To screen"),
+    Key([mod], "w", lazy.to_screen(1) ),
+    Key([mod, "shift"], "w", lazy.window.toscreen(1), desc="To screen"),
 
     Key([mod, "shift"], "o", lazy.layout.decrease_nmaster(),
         desc="Fullscreen window"),
@@ -124,8 +124,8 @@ keys = [
 
     # Screens
     Key([mod], "m", lazy.screen.toggle_group(), ),
-    Key([mod], "comma", lazy.screen.prev_group() ),
-    Key([mod], "period", lazy.screen.next_group() ),
+    Key([mod], "period", lazy.layout.shuffle_down() ),
+    Key([mod], "comma", lazy.layout.shuffle_up() ),
 
     Key([mod], "r", lazy.spawn("alacritty -e ranger"), desc="Launch Ranger"),
 
@@ -278,7 +278,9 @@ dnlBar = [
         widget.GroupBox(
             hide_unused=True,
             margin=2.5,
-            this_current_screen_border=colors['color1'],
+            highlight_method='block',
+            urgent_alert_methods='block',
+            this_current_screen_border=colors['color2'],
             this_screen_border=colors['color2']
         ),
 
@@ -337,38 +339,33 @@ dnlBar = [
         widget.Systray(icon_size=12),
         ]
 
-if socket.gethostname() == 'sashimi':
-    screens = [
-        Screen( top=bar.Bar(dnlBar, 28) ),
-        Screen( top=bar.Bar([
-                    widget.CurrentLayoutIcon(background=colors['color0'],scale=.8),
+screens = [
+    Screen( top=bar.Bar(dnlBar, 28) ),
+    Screen( top=bar.Bar([
+                widget.CurrentLayoutIcon(background=colors['color0'],scale=.8),
 
-                    widget.CurrentScreen(
-                        26,
-                        font="mono",
-                        active_color=colors['color8'],
-                        inactive_color=colors['color8'],
-                        padding=12
-                    ),
+                widget.CurrentScreen(
+                    26,
+                    font="mono",
+                    active_color=colors['color8'],
+                    inactive_color=colors['color8'],
+                    padding=12
+                ),
 
-                    widget.Sep(**separator),
+                widget.GroupBox(
+                    hide_unused=True,
+                    highlight_method='block',
+                    urgent_alert_methods='block',
+                ),
 
-                    widget.GroupBox(
-                        hide_unused=True,
-                        highlight_method='block',
-                        urgent_alert_methods='block',
-                    ),
+                widget.WindowName(padding=12,background=colors['color0']),
 
-                    widget.Clock(format='%a %d/%m %H:%M', foreground=colors['color1']),
+                widget.Clock(format='%a %d/%m %H:%M', foreground=colors['color1']),
 
-                ], 28
-            )
+            ], 28
         )
-    ]
-else:
-    screens = [
-        Screen( top=bar.Bar(dnlBar, 28) ),
-    ]
+    )
+]
 
 # Drag floating layouts.
 mouse = [
@@ -383,7 +380,7 @@ dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
 main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = False
-bring_front_click = False
+bring_front_click = True
 cursor_warp = False
 
 floating_layout = layout.Floating(float_rules=[

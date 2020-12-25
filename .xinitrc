@@ -19,7 +19,7 @@ greenclip daemon &
 
 nm-applet &
 
-#/usr/bin/stalonetray &
+#urxvtd -q &
 
 barriers &
 
@@ -31,7 +31,7 @@ dropbox &
 
 if [[ -z $WM ]];
 then 
-    ~/bin/xr -m note && picom -b && wal -R && exec qtile > ~/log
+    ~/bin/xr -m fodao && picom -b && wal -R && exec qtile > ~/log
 else
 	~/bin/xr -m note && conky -d && picom -b && wal -R && exec $WM
 fi
