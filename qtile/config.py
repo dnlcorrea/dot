@@ -14,36 +14,9 @@ import socket,subprocess
 
 print (colors['color0'])
 
-#def kick_to_next_screen(qtile, direction=1):
-#      other_scr_index = (qtile.screens.index(qtile.currentScreen) + direction) % len(qtile.screens)
-#      othergroup = None
-#      for group in qtile.cmd_groups().values():
-#              if group['screen'] == other_scr_index:
-#                      othergroup = group['name']
-#                      break
-#      if othergroup:
-#              qtile.moveToGroup(othergroup)
-
-
-# cmd_display_kb(*args)[source]
-
-### Sets
-
-#  colors = [
-#      "#002642", "#840032",
-#      "#e59500", "#e5dada",
-#      "#02040f"
-#  ]
-
-layout_theme = {
-    "border_width": 1,
-    "margin": 6,
-    "border_focus": colors['color7'],
-    "border_normal": colors['color0']
-}
-
 mod = "mod4"
 terminal = "alacritty"
+browser="/home/daniel/Applications/brave"
 
 keys = [
     # Function Keys
@@ -52,14 +25,8 @@ keys = [
     # QTile COnfig and documentation
     Key([mod], "p", lazy.spawn(terminal + " -e nvim .config/qtile/config.py"), desc="Edit config file"),
     Key([mod, "shift"], "p",
-        lazy.spawn("google-chrome-stable --new-window http://docs.qtile.org/en/latest/"),
-        desc="QTile documentation on the world wide web."
+        lazy.spawn(browser + " http://docs.qtile.org/en/latest/"), desc="QTile documentation on the world wide web."
     ),
-
-    Key([mod], "F2", lazy.spawn("emacsclient -c org/journal/October.org"),
-        desc="Journal"),
-    Key([mod], "F3", lazy.spawn("emacsclient -c ~/.config/fish/config.fish"),
-        desc="Journal"),
 
     # Switch between windows in current stack pane
     Key([mod], "i", lazy.layout.grow(), desc="Increase Ratio"),
@@ -87,7 +54,6 @@ keys = [
     Key([mod], "Return", lazy.layout.toggle_split()),
     Key([mod, "shift"], "k", lazy.layout.shuffle_down()),
 
-    # Maybe this is what I want
     Key(["shift"], "space", lazy.layout.shuffle_up()),
 
     Key([mod, "shift"], "g", lazy.spawn("google-chrome-stable"), desc="Launch browser"),
@@ -99,11 +65,11 @@ keys = [
     Key([mod], "f", lazy.window.toggle_fullscreen(),
         desc="Toggle Fullscreen"),
 
-    Key([mod], "e", lazy.to_screen(0) ),
-    Key([mod, "shift"], "e", lazy.window.toscreen(0), desc="To screen"),
+    Key([mod], "w", lazy.to_screen(0) ),
+    Key([mod, "shift"], "w", lazy.window.toscreen(0), desc="To screen"),
 
-    Key([mod], "w", lazy.to_screen(1) ),
-    Key([mod, "shift"], "w", lazy.window.toscreen(1), desc="To screen"),
+    Key([mod], "q", lazy.to_screen(1) ),
+    Key([mod, "shift"], "q", lazy.window.toscreen(1), desc="To screen"),
 
     Key([mod, "shift"], "o", lazy.layout.decrease_nmaster(),
         desc="Fullscreen window"),
@@ -111,11 +77,7 @@ keys = [
     Key([mod], "o", lazy.layout.increase_nmaster(),
         desc="Fullscreen window"),
 
-
-    Key([mod], "c",
-        lazy.spawn("scrcpy"),
-        desc='Launch scrcpy'
-    ),
+    #Key([mod], "c", lazy.spawn("scrcpy"), desc='Launch scrcpy'),
 
     Key([mod], "b", lazy.hide_show_bar("top"), desc='Toggle bar' ),
     Key([mod], "t", lazy.function(toggleMargins)),
@@ -131,8 +93,7 @@ keys = [
 
     Key([mod], "v", lazy.spawn(terminal + " -e nvim"), desc="Launch Nvim"),
 
-    Key([mod], "n", lazy.spawn("nvim-qt"),
-        desc="Launch Emacs"),
+    Key([mod], "n", lazy.spawn("emacs"), desc="Launch Emacs"),
 
     Key([mod], "Tab", lazy.next_layout(),
         desc="Switch window focus to other pane(s) of stack"),
@@ -140,10 +101,10 @@ keys = [
     Key([mod, "shift"], "Tab", lazy.prev_layout(),
         desc="Switch window focus to other pane(s) of stack"),
 
-    Key([mod], "BackSpace", lazy.spawn('st -c pulsemixer pulsemixer'),
+    Key([mod], "BackSpace", lazy.spawn(terminal + ' -e pulsemixer pulsemixer'),
         desc="Adjust volume using pulsemixer"),
 
-    Key([mod], "backslash", lazy.spawn("exeq"), desc="Swap panes of split stack"),
+    Key([mod], "backslash", lazy.spawn("exeq"), desc="ROFI Executables"),
 
     # Swap panes of split stack
 
@@ -156,7 +117,7 @@ keys = [
     Key([mod], "equal", lazy.spawn("pactl -- set-sink-volume 0 +10%")),
     Key([mod], "minus", lazy.spawn("pactl -- set-sink-volume 0 -10%")),
 
-    Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
@@ -191,7 +152,7 @@ groups.append(
           # define a drop down terminal.
           # it is placed in the upper third of screen by default.
           DropDown(
-              "term", "st",
+              "term", terminal,
               opacity=.98,
               height=.5, width=.5,
               y=.25, x=.25,
@@ -207,36 +168,34 @@ keys.extend([
 
 
 
-#Group("7", matches=[Match(wm_class=["discord"])])
-
+layout_theme = {
+    "border_width": 2,
+    "margin": 7,
+    "border_focus": colors['color7'],
+    "border_normal": colors['color0']
+}
 
 layouts = [
     layout.MonadTall(
         ratio = 0.55,
-        border_width=1,
-        margin=8,
-        border_focus= "#ededed",
-        border_normal= colors['color0'],
         single_margin = 0,
-        new_at_current = True
+        new_at_current = True,
+        **layout_theme
     ),
-    layout.Max(**layout_theme),
-    layout.Bsp(**layout_theme),
+    layout.Max(),
+    layout.Zoomy(),
     layout.Stack(
         num_stacks=2,
-        margin=3,
-        border_focus = "#ececec",
-        border_normal = "#222222"
-        ),
-    layout.TreeTab(**layout_theme),
+        **layout_theme
+    ),
     ## Other layouts
+    #layout.TreeTab(**layout_theme),
     #layout.Columns(),
     #layout.MonadWide( ),
     #layout.Tile(),
     #layout.Matrix(),
     #layout.RatioTile(margin=4),
     #layout.VerticalTile(),
-    #layout.Zoomy(),
 ]
 
 
@@ -328,7 +287,7 @@ dnlBar = [
         widget.Clock(format='%a %d/%m %H:%M', foreground=colors['color1']),
 
         #widget.TextBox(text="", foreground=colors['color7']),
-        widget.PulseVolume(foreground=colors['color8']),
+        #widget.Volume(foreground=colors['color8']),
 
         #widget.CheckUpdates(
         #    foreground=colors[1],
@@ -386,6 +345,7 @@ cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
     # Run the utility of `xprop` to see the wm class and name of an X client.
     {'wmclass': 'confirm'},
+    {'wmclass': 'pavucontrol'},
     {'wmclass': 'dialog'},
     {'wmclass': 'download'},
     {'wmclass': 'error'},
