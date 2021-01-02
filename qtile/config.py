@@ -4,6 +4,8 @@ from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Screen, Match, ScratchPad, DropDown
 from libqtile.lazy import lazy
 
+from libqtile.log_utils import logger
+
 from margins import *
 
 import pywal
@@ -12,7 +14,11 @@ colors = pywal.colors.file(".cache/wal/colors.json")['colors']
 
 import socket,subprocess
 
-print (colors['color0'])
+def kick_to_next_screen(qtile):
+    cur = 1 if int(qtile.current_screen.index) == 0 else 0
+    qtile.current_window.toscreen(cur)
+    logger.warning(cur)
+    return True
 
 mod = "mod4"
 terminal = "alacritty"
@@ -21,23 +27,24 @@ browser="/home/daniel/Applications/brave"
 keys = [
     # Function Keys
     Key([mod], "F1", lazy.spawn("pavucontrol"), desc="Pulse Audio GUI"),
+    Key([mod], "F2", lazy.spawn(terminal + " -e htop"), desc="htop"),
 
     # QTile COnfig and documentation
     Key([mod], "p", lazy.spawn(terminal + " -e nvim .config/qtile/config.py"), desc="Edit config file"),
     Key([mod, "shift"], "p",
-        lazy.spawn(browser + " http://docs.qtile.org/en/latest/"), desc="QTile documentation on the world wide web."
+        lazy.spawn(browser + " --new-window http://docs.qtile.org/en/latest/"), desc="QTile documentation on the world wide web."
     ),
 
     # Switch between windows in current stack pane
-    Key([mod], "i", lazy.layout.grow(), desc="Increase Ratio"),
-    Key([mod], "u", lazy.layout.shrink(),  desc="Decrease Ratio"),
+    Key([mod], "i", lazy.layout.grow(), lazy.layout.toggle_split(), desc="Increase Ratio"),
+    Key([mod], "u", lazy.layout.shrink(), lazy.layout.normalize(), desc="Decrease Ratio"),
 
 
     # Move windows up or down in current stack
     Key([mod], "j", lazy.layout.down()),
     Key([mod], "k", lazy.layout.up()),
-    Key([mod], "h", lazy.layout.left(), lazy.layout.shuffle_left()),
-    Key([mod], "l", lazy.layout.right(), lazy.layout.previous()),
+    Key([mod], "h", lazy.layout.left()),
+    Key([mod], "l", lazy.layout.right()),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
     Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
@@ -65,17 +72,12 @@ keys = [
     Key([mod], "f", lazy.window.toggle_fullscreen(),
         desc="Toggle Fullscreen"),
 
-    Key([mod], "w", lazy.to_screen(0) ),
-    Key([mod, "shift"], "w", lazy.window.toscreen(0), desc="To screen"),
+    Key([mod], "w", lazy.prev_screen()),
 
-    Key([mod], "q", lazy.to_screen(1) ),
-    Key([mod, "shift"], "q", lazy.window.toscreen(1), desc="To screen"),
+    Key([mod], "o", lazy.layout.flip(), desc="Shrink Main"),
+    Key([mod], "y", lazy.layout.maximize(), desc="Shrink Main"),
 
-    Key([mod, "shift"], "o", lazy.layout.decrease_nmaster(),
-        desc="Fullscreen window"),
-
-    Key([mod], "o", lazy.layout.increase_nmaster(),
-        desc="Fullscreen window"),
+    Key([mod], "x", lazy.function(kick_to_next_screen)),
 
     #Key([mod], "c", lazy.spawn("scrcpy"), desc='Launch scrcpy'),
 
@@ -89,11 +91,11 @@ keys = [
     Key([mod], "period", lazy.layout.shuffle_down() ),
     Key([mod], "comma", lazy.layout.shuffle_up() ),
 
+    #Key([mod], "bracketleft", lazy.prev_screen() ),
+
     Key([mod], "r", lazy.spawn("alacritty -e ranger"), desc="Launch Ranger"),
 
     Key([mod], "v", lazy.spawn(terminal + " -e nvim"), desc="Launch Nvim"),
-
-    Key([mod], "n", lazy.spawn("emacs"), desc="Launch Emacs"),
 
     Key([mod], "Tab", lazy.next_layout(),
         desc="Switch window focus to other pane(s) of stack"),
@@ -119,6 +121,8 @@ keys = [
 
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
 
+    Key([mod], "q", lazy.spawn(terminal + " -e fish -c wallpaper"), desc="Qtile CMD"),
+
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
     Key([mod], "grave", lazy.spawn("rofi -show drun"),
@@ -132,7 +136,54 @@ keys = [
     Key([mod], "d", lazy.to_layout_index(2) ),
 ]
 
-groups = [Group(i, position=i) for i in "123456789"]
+
+
+
+layout_theme = {
+    "border_width": 2,
+    "margin": 7,
+    "border_focus": colors['color7'],
+    "border_normal": colors['color0']
+}
+
+layouts = [
+    layout.MonadTall(
+        ratio = 0.55,
+        single_margin = 0,
+        new_at_current = True,
+        **layout_theme
+    ),
+    layout.Max(),
+    layout.Columns(
+        border_width=3,
+        margin=5,
+        border_focus=colors['color7'],
+        border_normal=colors['color0'],
+        border_focus_stack=colors['color4'],
+        grow_amount=6
+    ),
+    layout.Matrix(**layout_theme),
+    ## Other layouts
+    #layout.Tile(**layout_theme),
+    #layout.Zoomy(),
+    #layout.Stack(),
+    #layout.TreeTab(),
+    #layout.MonadWide( ),
+    #layout.RatioTile(),
+    #layout.VerticalTile(),
+]
+
+groups = [
+    Group("1", position=1, layout="monadtall"),
+    Group("2", position=2, layout="max"),
+    Group("3", position=3, layout="columns"),
+    Group("4", position=4, layout="matrix"),
+    Group("5", position=5, layout="monadtall"),
+    Group("6", position=6, layout="monadtall"),
+    Group("7", position=7, layout="monadtall"),
+    Group("8", position=8, layout="monadtall"),
+    Group("9", position=9, layout="monadtall"),
+]
 
 for i in groups:
     keys.extend([
@@ -145,6 +196,7 @@ for i in groups:
         Key([mod, "control"], i.name, lazy.window.togroup(i.name),
             desc="Switch to & move focused window to group {}".format(i.name)),
     ])
+
 
 # ScratchPad
 groups.append(
@@ -165,39 +217,6 @@ groups.append(
 keys.extend([
     Key([mod], 'semicolon', lazy.group['scratchpad'].dropdown_toggle('term'))
 ])
-
-
-
-layout_theme = {
-    "border_width": 2,
-    "margin": 7,
-    "border_focus": colors['color7'],
-    "border_normal": colors['color0']
-}
-
-layouts = [
-    layout.MonadTall(
-        ratio = 0.55,
-        single_margin = 0,
-        new_at_current = True,
-        **layout_theme
-    ),
-    layout.Max(),
-    layout.Zoomy(),
-    layout.Stack(
-        num_stacks=2,
-        **layout_theme
-    ),
-    ## Other layouts
-    #layout.TreeTab(**layout_theme),
-    #layout.Columns(),
-    #layout.MonadWide( ),
-    #layout.Tile(),
-    #layout.Matrix(),
-    #layout.RatioTile(margin=4),
-    #layout.VerticalTile(),
-]
-
 
 widget_defaults = dict(
         font='Mono',
@@ -244,6 +263,9 @@ dnlBar = [
         ),
 
         widget.WindowName(padding=12,background=colors['color0']),
+
+        widget.TextBox(text="🌡",padding=0),
+        widget.ThermalSensor(update_interval=10),
 
         widget.Pomodoro(prefix_inactive="🍅", prefix_active="🍅 "),
 
@@ -326,13 +348,16 @@ screens = [
     )
 ]
 
+logger.warning(lazy.screen.info())
+
+
 # Drag floating layouts.
 mouse = [
     Drag([mod], "Button1", lazy.window.set_position_floating(),
          start=lazy.window.get_position()),
     Drag([mod], "Button3", lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.toscreen(0))
+    Click([mod], "Button2", lazy.function(kick_to_next_screen))
 ]
 
 dgroups_key_binder = None
@@ -352,6 +377,7 @@ floating_layout = layout.Floating(float_rules=[
     {'wmclass': 'file_progress'},
     {'wmclass': 'notification'},
     {'wmclass': 'splash'},
+    {'wmclass': 'ffmpeg'},
     {'wmclass': 'toolbar'},
     {'wmclass': 'pulsemixer'},
     {'wmclass': 'confirmreset'},  # gitk
