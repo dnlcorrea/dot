@@ -35,7 +35,6 @@ keys = [
         lazy.spawn(browser + " --new-window http://docs.qtile.org/en/latest/"), desc="QTile documentation on the world wide web."
     ),
 
-    # Switch between windows in current stack pane
     Key([mod], "i", lazy.layout.grow(), lazy.layout.toggle_split(), desc="Increase Ratio"),
     Key([mod], "u", lazy.layout.shrink(), lazy.layout.normalize(), desc="Decrease Ratio"),
 
@@ -58,7 +57,6 @@ keys = [
     Key([mod, "control"], "h", lazy.layout.grow_left()),
     Key([mod, "control"], "l", lazy.layout.grow_right()),
     Key([mod, "shift"], "n", lazy.layout.normalize()),
-    Key([mod], "Return", lazy.layout.toggle_split()),
     Key([mod, "shift"], "k", lazy.layout.shuffle_down()),
 
     Key(["shift"], "space", lazy.layout.shuffle_up()),
@@ -79,7 +77,7 @@ keys = [
 
     Key([mod], "x", lazy.function(kick_to_next_screen)),
 
-    #Key([mod], "c", lazy.spawn("scrcpy"), desc='Launch scrcpy'),
+    Key([mod], "c", lazy.findwindow(), desc='Find window'),
 
     Key([mod], "b", lazy.hide_show_bar("top"), desc='Toggle bar' ),
     Key([mod], "t", lazy.function(toggleMargins)),
@@ -121,7 +119,8 @@ keys = [
 
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
 
-    Key([mod], "q", lazy.spawn(terminal + " -e fish -c wallpaper"), desc="Qtile CMD"),
+    Key([mod], "q", lazy.spawn(terminal + " -e fish -c wallpaper -r"), desc="Qtile CMD"),
+    Key([mod, "shift"], "q", lazy.spawn(terminal + " -e fish -c wallpaper"), desc="Qtile CMD"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
@@ -262,6 +261,7 @@ dnlBar = [
             this_screen_border=colors['color2']
         ),
 
+        widget.Prompt(),
         widget.WindowName(padding=12,background=colors['color0']),
 
         widget.TextBox(text="🌡",padding=0),
@@ -391,4 +391,4 @@ floating_layout = layout.Floating(float_rules=[
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
-wmname = "LG3D"
+wmname = "qtile"
