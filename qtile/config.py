@@ -27,7 +27,9 @@ browser="/home/daniel/Applications/brave"
 keys = [
     # Function Keys
     Key([mod], "F1", lazy.spawn("pavucontrol"), desc="Pulse Audio GUI"),
-    Key([mod], "F2", lazy.spawn(terminal + " -e htop"), desc="htop"),
+    Key([mod], "F2", lazy.spawn(terminal + " -t htop -e htop"), desc="htop"),
+    Key([mod], "F3", lazy.spawn(terminal + " -t BashTOP -e bashtop"), desc="bashtop"),
+    Key([mod], "F4", lazy.spawn(browser + " --new-window https://web.whatsapp.com"), desc="whatsapp"),
 
     # QTile COnfig and documentation
     Key([mod], "p", lazy.spawn(terminal + " -e nvim .config/qtile/config.py"), desc="Edit config file"),
@@ -77,7 +79,7 @@ keys = [
 
     Key([mod], "x", lazy.function(kick_to_next_screen)),
 
-    Key([mod], "c", lazy.findwindow(), desc='Find window'),
+    Key([mod], "bracketleft", lazy.findwindow(), desc='Find window'),
 
     Key([mod], "b", lazy.hide_show_bar("top"), desc='Toggle bar' ),
     Key([mod], "t", lazy.function(toggleMargins)),
@@ -124,7 +126,11 @@ keys = [
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
-    Key([mod], "grave", lazy.spawn("rofi -show drun"),
+
+    Key([mod], "dead_acute", lazy.spawn("rofi -show drun"),
+        desc="Spawn a command using a prompt widget"),
+
+    Key([mod], "cedilla", lazy.spawn("rofi -show drun"),
         desc="Spawn a command using a prompt widget"),
 
     Key([mod, "shift"], "s", lazy.spawn("rofi -show ssh")),
@@ -172,16 +178,23 @@ layouts = [
     #layout.VerticalTile(),
 ]
 
+matches = [
+    [
+        Match(title=["BashTOP"]),
+        Match(title=["htop"])
+    ]
+]
+
 groups = [
     Group("1", position=1, layout="monadtall"),
     Group("2", position=2, layout="max"),
     Group("3", position=3, layout="columns"),
     Group("4", position=4, layout="matrix"),
-    Group("5", position=5, layout="monadtall"),
+    Group("5", position=5, matches=[matches[0]], layout="monadtall"),
     Group("6", position=6, layout="monadtall"),
     Group("7", position=7, layout="monadtall"),
     Group("8", position=8, layout="monadtall"),
-    Group("9", position=9, layout="monadtall"),
+    Group("9", position=9, matches=[Match(wm_class=["discord"]), Match(title=["^WhatsApp.*"])], layout="columns"),
 ]
 
 for i in groups:
@@ -190,7 +203,7 @@ for i in groups:
             desc="Switch to group {}".format(i.name)),
 
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
-            desc="Switch to & move focused window to group {}".format(i.name)),
+            desc="owitch to & move focused window to group {}".format(i.name)),
 
         Key([mod, "control"], i.name, lazy.window.togroup(i.name),
             desc="Switch to & move focused window to group {}".format(i.name)),
@@ -261,8 +274,8 @@ dnlBar = [
             this_screen_border=colors['color2']
         ),
 
-        widget.Prompt(),
         widget.WindowName(padding=12,background=colors['color0']),
+        widget.Prompt(),
 
         widget.TextBox(text="🌡",padding=0),
         widget.ThermalSensor(update_interval=10),
@@ -380,6 +393,7 @@ floating_layout = layout.Floating(float_rules=[
     {'wmclass': 'ffmpeg'},
     {'wmclass': 'toolbar'},
     {'wmclass': 'pulsemixer'},
+    {'wmclass': 'Xephyr'},
     {'wmclass': 'confirmreset'},  # gitk
     {'wmclass': 'makebranch'},  # gitk
     {'wmclass': 'maketag'},  # gitk
