@@ -232,7 +232,7 @@ keys.extend([
 
 widget_defaults = dict(
         font='Mono',
-        fontsize=12,
+        fontsize=16,
         padding=6,
         antialias=True,
         autohint=True,
@@ -334,7 +334,7 @@ dnlBar = [
         ]
 
 screens = [
-    Screen( top=bar.Bar(dnlBar, 28) ),
+    Screen( top=bar.Bar(dnlBar, 32) ),
     Screen( top=bar.Bar([
                 widget.CurrentLayoutIcon(background=colors['color0'],scale=.8),
 
