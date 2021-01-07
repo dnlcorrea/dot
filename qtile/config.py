@@ -103,10 +103,12 @@ keys = [
     Key([mod, "shift"], "Tab", lazy.prev_layout(),
         desc="Switch window focus to other pane(s) of stack"),
 
-    Key([mod], "BackSpace", lazy.spawn(terminal + ' -e pulsemixer pulsemixer'),
+    Key([mod], "BackSpace", lazy.spawn("sxiv /home/daniel/.config/qtile"),
         desc="Adjust volume using pulsemixer"),
 
     Key([mod], "backslash", lazy.spawn("exeq"), desc="ROFI Executables"),
+
+    Key([mod], "bracketright", lazy.spawn("rofilocate"), desc="ROFI Executables"),
 
     # Swap panes of split stack
 
@@ -121,16 +123,16 @@ keys = [
 
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
 
-    Key([mod], "q", lazy.spawn('/home/daniel/bin/wallie'), desc="Qtile CMD"),
-    Key([mod, "shift"], "q", lazy.spawn(terminal + " -e fish -c wallpaper"), desc="Qtile CMD"),
+    Key([mod], "0", lazy.spawn('/home/daniel/bin/wallie'), desc="Qtile CMD"),
+    Key([mod, "shift"], "0", lazy.spawn(terminal + " -e fish -c wallpaper"), desc="Qtile CMD"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
 
-    Key([mod], "dead_acute", lazy.spawn("rofi -show drun"),
-        desc="Spawn a command using a prompt widget"),
+    #Key([mod], "dead_acute", lazy.spawn("rofi -show drun"),
+    #    desc="Spawn a command using a prompt widget"),
 
-    Key([mod], "cedilla", lazy.spawn("rofi -show drun"),
+    Key([mod], "ccedilla", lazy.spawn("rofi -show drun"),
         desc="Spawn a command using a prompt widget"),
 
     Key([mod, "shift"], "s", lazy.spawn("rofi -show ssh")),
