@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sudo mount -t cifs //xps/D $HOME/xps \
-    -o uid=daniel,rw,credentials=$HOME/.credentials/smb,iocharset=utf8,vers=3.11

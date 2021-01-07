@@ -1,5 +1,0 @@
-#!/bin/sh
-
-cd ~/dwm
-make
-sudo make install

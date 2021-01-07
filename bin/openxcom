@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd /home/daniel/.wine/drive_c/Program Files (x86)/OpenXcom
-wine openxcom.exe'

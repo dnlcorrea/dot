@@ -1,8 +1,0 @@
-#!/bin/sh
-
-API_KEY=e902a8b595c39578bbd22ce413670f93
-CACHE=~/.cache/weather.json
-
-curl -s "https://api.openweathermap.org/data/2.5/weather?q=Foz do Iguaçu&appid=${API_KEY}&units=metric" >  $CACHE
-
-curl -s "https://api.openweathermap.org/data/2.5/forecast?q={Foz do Iguaçu}&appid=${API_KEY}&units=metric" >  ~/.cache/forecast.json

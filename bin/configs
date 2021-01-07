@@ -1,5 +1,0 @@
-#!/bin/fish
-
-grep MODKEY ~/dwm/config.h | while read line
-    echo $line | string trim
-end | dmenu

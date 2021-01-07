@@ -1,5 +1,0 @@
-#!/bin/bash
-
-PROTOCOL="https:"
-
-google-chrome-stable --new-window "$PROTOCOL//web.whatsapp.com" "$PROTOCOL//web.telegram.org"  "$PROTOCOL//mail.google.com/mail/u/1/#inbox"  "$PROTOCOL//mail.google.com/mail/u/0/#inbox" &

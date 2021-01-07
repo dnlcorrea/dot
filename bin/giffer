@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-ffmpeg -ss $2 -t $3 -i "$1" -filter_complex "[0:v] palettegen" palette.png
-ffmpeg -ss $2 -t $3 -i "$1"  -i palette.png -filter_complex "[0:v][1:v] paletteuse" prettyStickAround.gif

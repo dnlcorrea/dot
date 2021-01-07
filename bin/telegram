@@ -1,3 +1,0 @@
-#!/bin/bash
-
-curl -i -X POST 'https://api.telegram.org/bot866057818:AAG30XM0Z8nMuU1bXshz-PQH3yu_EG8BNzA/sendMessage' -F chat_id=-1001310202143 -F text="$1"

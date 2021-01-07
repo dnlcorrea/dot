@@ -1,6 +1,0 @@
-#!/bin/bash
-
-FOLDER=$(ls -1 $HOME/www | rofi -dmenu)
-
-tmux \
--c "cd /home/daniel/www/$FOLDER; php artisan tinker"

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-curl -s "https://hipsum.co/?paras=3&type=hipster-centric&start-with-lorem=0" | grep 'anyipsum-output' | php -r 'echo strip_tags(file_get_contents("php://stdin"));' | xsel -bi
