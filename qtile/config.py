@@ -17,11 +17,11 @@ import socket,subprocess
 def kick_to_next_screen(qtile):
     cur = 1 if int(qtile.current_screen.index) == 0 else 0
     qtile.current_window.toscreen(cur)
-    logger.warning(cur)
+    qtile.to_screen(cur)
     return True
 
 mod = "mod4"
-terminal = "alacritty"
+terminal = "st"
 browser="/home/daniel/Applications/brave"
 
 keys = [
@@ -93,7 +93,7 @@ keys = [
 
     #Key([mod], "bracketleft", lazy.prev_screen() ),
 
-    Key([mod], "r", lazy.spawn("alacritty -e ranger"), desc="Launch Ranger"),
+    Key([mod], "r", lazy.spawn(terminal + " -e ranger"), desc="Launch Ranger"),
 
     Key([mod], "v", lazy.spawn(terminal + " -e nvim"), desc="Launch Nvim"),
 
@@ -121,7 +121,7 @@ keys = [
 
     Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
 
-    Key([mod], "q", lazy.spawn(terminal + " -e fish -c wallpaper -r"), desc="Qtile CMD"),
+    Key([mod], "q", lazy.spawn('/home/daniel/bin/wallie'), desc="Qtile CMD"),
     Key([mod, "shift"], "q", lazy.spawn(terminal + " -e fish -c wallpaper"), desc="Qtile CMD"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
@@ -145,7 +145,7 @@ keys = [
 
 
 layout_theme = {
-    "border_width": 2,
+    "border_width": 1,
     "margin": 7,
     "border_focus": colors['color7'],
     "border_normal": colors['color0']
@@ -203,7 +203,7 @@ for i in groups:
             desc="Switch to group {}".format(i.name)),
 
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
-            desc="owitch to & move focused window to group {}".format(i.name)),
+            desc="switch to & move focused window to group {}".format(i.name)),
 
         Key([mod, "control"], i.name, lazy.window.togroup(i.name),
             desc="Switch to & move focused window to group {}".format(i.name)),
@@ -370,7 +370,8 @@ mouse = [
          start=lazy.window.get_position()),
     Drag([mod], "Button3", lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.function(kick_to_next_screen))
+    Click([mod], "Button2", lazy.function(kick_to_next_screen)),
+    Click([mod], "Button3", lazy.window.bring_to_front())
 ]
 
 dgroups_key_binder = None
@@ -390,6 +391,7 @@ floating_layout = layout.Floating(float_rules=[
     {'wmclass': 'file_progress'},
     {'wmclass': 'notification'},
     {'wmclass': 'splash'},
+    {'wname'  : 'Loading '},
     {'wmclass': 'ffmpeg'},
     {'wmclass': 'toolbar'},
     {'wmclass': 'pulsemixer'},
@@ -405,4 +407,4 @@ floating_layout = layout.Floating(float_rules=[
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
-wmname = "qtile"
+wmname = "LG3D"
