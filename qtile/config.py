@@ -21,7 +21,7 @@ def kick_to_next_screen(qtile):
     return True
 
 mod = "mod4"
-terminal = "st"
+terminal = "kitty"
 browser="/home/daniel/Applications/brave"
 
 keys = [
@@ -162,7 +162,7 @@ layouts = [
     ),
     layout.Max(),
     layout.Columns(
-        border_width=3,
+        border_width=1,
         margin=5,
         border_focus=colors['color7'],
         border_normal=colors['color0'],
@@ -180,23 +180,16 @@ layouts = [
     #layout.VerticalTile(),
 ]
 
-matches = [
-    [
-        Match(title=["BashTOP"]),
-        Match(title=["htop"])
-    ]
-]
-
 groups = [
     Group("1", position=1, layout="monadtall"),
     Group("2", position=2, layout="max"),
     Group("3", position=3, layout="columns"),
     Group("4", position=4, layout="matrix"),
-    Group("5", position=5, matches=[matches[0]], layout="monadtall"),
+    Group("5", position=5, layout="monadtall"),
     Group("6", position=6, layout="monadtall"),
     Group("7", position=7, layout="monadtall"),
     Group("8", position=8, layout="monadtall"),
-    Group("9", position=9, matches=[Match(wm_class=["discord"]), Match(title=["^WhatsApp.*"])], layout="columns"),
+    Group("9", position=9, layout="columns"),
 ]
 
 for i in groups:
@@ -379,7 +372,7 @@ mouse = [
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
 main = None  # WARNING: this is deprecated and will be removed soon
-follow_mouse_focus = False
+follow_mouse_focus = True
 bring_front_click = True
 cursor_warp = False
 
