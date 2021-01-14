@@ -1,7 +1,7 @@
 from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget
-from libqtile.config import Click, Drag, Group, Key, Screen, Match, ScratchPad, DropDown
+from libqtile.config import Rule, Click, Drag, Group, Key, Screen, Match, ScratchPad, DropDown
 from libqtile.lazy import lazy
 
 from libqtile.log_utils import logger
@@ -370,33 +370,20 @@ mouse = [
 ]
 
 dgroups_key_binder = None
-dgroups_app_rules = []  # type: List
+
+dgroups_app_rules = [
+        Rule(Match(wm_class='discord'),
+            group="9", float=True, intrusive=True,
+        )
+]
+
 main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
 bring_front_click = True
 cursor_warp = False
 
-floating_layout = layout.Floating(float_rules=[
-    # Run the utility of `xprop` to see the wm class and name of an X client.
-    {'wmclass': 'confirm'},
-    {'wmclass': 'pavucontrol'},
-    {'wmclass': 'dialog'},
-    {'wmclass': 'download'},
-    {'wmclass': 'error'},
-    {'wmclass': 'file_progress'},
-    {'wmclass': 'notification'},
-    {'wmclass': 'splash'},
-    {'wname'  : 'Loading '},
-    {'wmclass': 'ffmpeg'},
-    {'wmclass': 'toolbar'},
-    {'wmclass': 'pulsemixer'},
-    {'wmclass': 'Xephyr'},
-    {'wmclass': 'confirmreset'},  # gitk
-    {'wmclass': 'makebranch'},  # gitk
-    {'wmclass': 'maketag'},  # gitk
-    {'wname': 'branchdialog'},  # gitk
-    {'wname': 'pinentry'},  # GPG key password entry
-    {'wmclass': 'ssh-askpass'},  # ssh-askpass
+floating_layout = layout.Floating(auto_float_types=[
+    'notification', 'toolbar', 'dialog', 'splash'
 ], **layout_theme)
 
 auto_fullscreen = True
