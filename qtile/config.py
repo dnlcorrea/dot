@@ -129,6 +129,8 @@ keys = [
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
 
+    Key([mod], "q", lazy.spawn("emacs"), desc="Emacs"),
+
     #Key([mod], "dead_acute", lazy.spawn("rofi -show drun"),
     #    desc="Spawn a command using a prompt widget"),
 
@@ -337,7 +339,7 @@ screens = [
                     26,
                     font="mono",
                     active_color=colors['color8'],
-                    inactive_color=colors['color8'],
+                    inactive_color=colors['color7'],
                     padding=12
                 ),
 
@@ -366,7 +368,6 @@ mouse = [
     Drag([mod], "Button3", lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.function(kick_to_next_screen)),
-    Click([mod], "Button3", lazy.window.bring_to_front())
 ]
 
 dgroups_key_binder = None
@@ -382,9 +383,16 @@ follow_mouse_focus = True
 bring_front_click = True
 cursor_warp = False
 
-floating_layout = layout.Floating(auto_float_types=[
-    'notification', 'toolbar', 'dialog', 'splash'
-], **layout_theme)
+floating_layout = layout.Floating(float_rules=[
+    *layout.Floating.default_float_rules,
+    Match(wm_class='confirmreset'),  # gitk
+    Match(wm_class='makebranch'),  # gitk
+    Match(wm_class='maketag'),  # gitk
+    Match(wm_class='ssh-askpass'),  # ssh-askpass
+    Match(title='branchdialog'),  # gitk
+    Match(title='pinentry'),  # GPG key password entry
+    Match(wm_class='pavucontrol'),
+])
 
 auto_fullscreen = True
 focus_on_window_activation = "smart"
