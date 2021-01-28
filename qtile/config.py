@@ -1,3 +1,7 @@
+# Look in https://github.com/qtile/qtile/blob/v0.16.1/libqtile/resources/default_config.py
+# for examples
+# Updated: Thu Jan 28 16:55:46 -03 2021
+
 from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget
@@ -129,7 +133,7 @@ keys = [
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
 
-    Key([mod], "q", lazy.spawn("emacs"), desc="Emacs"),
+    #Key([mod], "q", lazy.spawn("emacs"), desc="Emacs"),
 
     #Key([mod], "dead_acute", lazy.spawn("rofi -show drun"),
     #    desc="Spawn a command using a prompt widget"),
@@ -384,15 +388,22 @@ bring_front_click = True
 cursor_warp = False
 
 floating_layout = layout.Floating(float_rules=[
-    *layout.Floating.default_float_rules,
-    Match(wm_class='confirmreset'),  # gitk
-    Match(wm_class='makebranch'),  # gitk
-    Match(wm_class='maketag'),  # gitk
-    Match(wm_class='ssh-askpass'),  # ssh-askpass
-    Match(title='branchdialog'),  # gitk
-    Match(title='pinentry'),  # GPG key password entry
-    Match(wm_class='pavucontrol'),
-])
+    {'wmclass': 'confirm'},
+    {'wmclass': 'dialog'},
+    {'wmclass': 'download'},
+    {'wmclass': 'error'},
+    {'wmclass': 'file_progress'},
+    {'wmclass': 'notification'},
+    {'wmclass': 'splash'},
+    {'wmclass': 'toolbar'},
+    {'wmclass': 'confirmreset'},
+    {'wmclass': 'makebranch'},
+    {'wmclass': 'maketag'},
+    {'wname'  : 'branchdialog'},
+    {'wname'  : 'pinentry'},
+    {'wmclass': 'ssh-askpass'},
+    {'wmclass': 'pavucontrol'},
+], **layout_theme)
 
 auto_fullscreen = True
 focus_on_window_activation = "smart"
