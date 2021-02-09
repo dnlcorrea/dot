@@ -29,6 +29,8 @@ terminal = "kitty"
 browser="/home/daniel/Applications/brave"
 
 keys = [
+    Key([], "Print", lazy.spawn("printscreen"), desc="Print Screen"),
+
     # Function Keys
     Key([mod], "F1", lazy.spawn("pavucontrol"), desc="Pulse Audio GUI"),
     Key([mod], "F2", lazy.spawn(terminal + " -t htop -e htop"), desc="htop"),
@@ -187,14 +189,14 @@ layouts = [
 ]
 
 groups = [
-    Group("1", position=1, layout="monadtall"),
+    Group("1", position=1, layout="monadtall", matches=[Match(wm_class=['jetbrains-phpstorm'])]),
     Group("2", position=2, layout="max"),
     Group("3", position=3, layout="columns"),
     Group("4", position=4, layout="matrix"),
     Group("5", position=5, layout="monadtall"),
     Group("6", position=6, layout="monadtall"),
     Group("7", position=7, layout="monadtall"),
-    Group("8", position=8, layout="monadtall"),
+    Group("8", position=8, layout="monadtall", matches=[Match(wm_class=['discord'])]),
     Group("9", position=9, layout="columns"),
 ]
 
@@ -233,7 +235,7 @@ keys.extend([
 
 widget_defaults = dict(
         font='Mono',
-        fontsize=12,
+        fontsize=16,
         padding=6,
         antialias=True,
         autohint=True,
@@ -376,11 +378,7 @@ mouse = [
 
 dgroups_key_binder = None
 
-dgroups_app_rules = [
-        Rule(Match(wm_class='discord'),
-            group="9", float=True, intrusive=True,
-        )
-]
+dgroups_app_rules = []
 
 main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
