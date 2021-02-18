@@ -28,6 +28,9 @@ mod = "mod4"
 terminal = "kitty"
 browser="/home/daniel/Applications/brave"
 
+def browserString(url):
+    return "%s --new-window https://%s" % (browser, url)
+
 keys = [
     Key([], "Print", lazy.spawn("printscreen"), desc="Print Screen"),
 
@@ -35,12 +38,13 @@ keys = [
     Key([mod], "F1", lazy.spawn("pavucontrol"), desc="Pulse Audio GUI"),
     Key([mod], "F2", lazy.spawn(terminal + " -t htop -e htop"), desc="htop"),
     Key([mod], "F3", lazy.spawn(terminal + " -t BashTOP -e bashtop"), desc="bashtop"),
-    Key([mod], "F4", lazy.spawn(browser + " --new-window https://web.whatsapp.com"), desc="whatsapp"),
+    Key([mod], "F4", lazy.spawn(browserString("web.whatsapp.com")), desc="whatsapp"),
+    Key([mod], "F5", lazy.spawn(browserString("music.youtube.com")), desc="whatsapp"),
 
     # QTile COnfig and documentation
     Key([mod], "p", lazy.spawn(terminal + " -e nvim .config/qtile/config.py"), desc="Edit config file"),
     Key([mod, "shift"], "p",
-        lazy.spawn(browser + " --new-window http://docs.qtile.org/en/latest/"), desc="QTile documentation on the world wide web."
+        lazy.spawn(browserString("docs.qtile.org/en/latest/")), desc="QTile documentation on the world wide web."
     ),
 
     Key([mod], "i", lazy.layout.grow(), lazy.layout.toggle_split(), desc="Increase Ratio"),
@@ -70,7 +74,8 @@ keys = [
     Key(["shift"], "space", lazy.layout.shuffle_up()),
 
     Key([mod, "shift"], "g", lazy.spawn("google-chrome-stable"), desc="Launch browser"),
-    Key([mod], "g", lazy.spawn("/home/daniel/Applications/brave"), desc="Launch browser"),
+    Key([mod, "control"], "g", lazy.spawn("firefox"), desc="Launch browser"),
+    Key([mod], "g", lazy.spawn(browser), desc="Launch browser"),
 
     Key([mod], "slash", lazy.window.toggle_floating(),
         desc="Toggle Floating"),
